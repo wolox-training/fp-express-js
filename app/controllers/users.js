@@ -1,4 +1,4 @@
-const userModel = require('../models/user').user,
+const userModel = require('../models').user,
   usersService = require('../services/users'),
   logger = require('../logger'),
   bcrypt = require('bcryptjs');
@@ -10,23 +10,17 @@ exports.create = (req, res) =>
     .findOne({ where: { email: req.body.email } })
     .then(user => {
       if (user) {
-        console.log('The user already exists');
+        logger.info(`The user ${user} already exists`);
+        res.status(422).send(`The user with email: ${user.email} already exists`);
       } else {
-        return encryptPassword(req.body.password)
-          .then(hashedPassword =>
-            userModel
-              .create({ ...req.body, password: hashedPassword })
-              .then(newUser => {
-                logger.info(`The user ${newUser} was created successfully`);
-                res.status(201).send(newUser.toString());
-              })
-              .catch(error => {
-                logger.info(`Failed to create the user. ${error}`);
-                res.status(422).send(error.toString());
-              })
-          )
+        return usersService
+          .create({ ...req.body, password: encryptPassword(req.body.password) })
+          .then(newUser => {
+            logger.info(`The user ${newUser} was created successfully`);
+            res.status(201).send(newUser);
+          })
           .catch(error => {
-            logger.info(`Failed to hash password. ${error}`);
+            logger.info(`Failed to create the user. ${error}`);
             res.status(422).send(error.toString());
           });
       }
