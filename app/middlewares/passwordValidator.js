@@ -6,7 +6,7 @@ const isValidPassword = password => password.length >= 8 && password.length <= 2
 
 exports.handle = (req, res, next) => {
   if (!isValidPassword(req.body.password)) {
-    next(errors.defaultError('Invalid password'));
+    next(errors.unprocessableEntity('Invalid password'));
   }
   next();
 };

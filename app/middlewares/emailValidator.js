@@ -6,7 +6,7 @@ const isValidEmail = email => validEmail.test(email);
 
 exports.handle = (req, res, next) => {
   if (!isValidEmail(req.body.email)) {
-    next(errors.defaultError('Invalid email'));
+    next(errors.unprocessableEntity('Invalid email'));
   }
   next();
 };

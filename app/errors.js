@@ -1,7 +1,14 @@
-const internalError = (message, internalCode) => ({
+exports.defaultError = message => ({
   message,
-  internalCode
+  internalCode: 500
 });
 
-exports.DEFAULT_ERROR = 'default_error';
-exports.defaultError = message => internalError(message, exports.DEFAULT_ERROR);
+exports.unprocessableEntity = message => ({
+  message,
+  internalCode: 422
+});
+
+exports.badRequest = message => ({
+  message,
+  internalCode: 400
+});
