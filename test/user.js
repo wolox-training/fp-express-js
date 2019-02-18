@@ -12,12 +12,12 @@ describe('/users POST', () => {
       .send({
         firstName: 'Harry',
         lastName: 'Potter',
-        email: 'franco.perez@wolox.com.ar',
+        email: 'harry.perez@wolox.com.ar',
         password: '12345678'
       })
       .then(res => {
         res.should.have.status(201);
-        userService.findBy({ email: 'franco.perez@wolox.com.ar' }).then(userFound => should.exist(userFound));
+        userService.findBy({ email: 'harry.perez@wolox.com.ar' }).then(userFound => should.exist(userFound));
         dictum.chai(res);
       }));
   it('should fail when the email already exists', () =>
