@@ -1,7 +1,8 @@
 const chai = require('chai'),
   dictum = require('dictum.js'),
   server = require('../app'),
-  should = chai.should();
+  should = chai.should(),
+  userService = require('../app/services/users');
 
 describe('/users POST', () => {
   it('should be successful signing up', () =>
@@ -16,6 +17,7 @@ describe('/users POST', () => {
       })
       .then(res => {
         res.should.have.status(201);
+        userService.findBy({ email: 'franco.perez@wolox.com.ar' }).then(userFound => console.log(userFound));
         dictum.chai(res);
       }));
   it('should fail when the email already exists', () =>
@@ -29,7 +31,7 @@ describe('/users POST', () => {
         password: '12345678'
       })
       .then(res => {
-        res.should.have.status(500);
+        res.should.have.status(422);
         res.body.message.should.equal('The user with email: test@wolox.com.ar already exists');
       }));
   it('should fail when the password is too short', () =>
@@ -44,6 +46,7 @@ describe('/users POST', () => {
       })
       .then(res => {
         res.should.have.status(422);
+        res.body.message[0].param.should.equal('password');
         res.body.message[0].msg.should.equal('must be at least 8 chars long');
       }));
   it('should fail when some field does not exist', () =>
@@ -57,6 +60,7 @@ describe('/users POST', () => {
       })
       .then(res => {
         res.should.have.status(422);
+        res.body.message[0].param.should.equal('firstName');
         res.body.message[0].msg.should.equal('can not be empty');
       }));
 });
