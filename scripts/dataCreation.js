@@ -1,10 +1,3 @@
-exports.execute = models => {
-  models.user
-    .create({
-      firstName: 'test',
-      lastName: 'wolox',
-      password: '12345678',
-      email: 'test@wolox.com.ar'
-    })
-    .then();
+exports.execute = () => {
+  // This function should create data for testing and return a promise
 };
