@@ -17,7 +17,7 @@ describe('/users POST', () => {
       })
       .then(res => {
         res.should.have.status(201);
-        userService.findBy({ email: 'franco.perez@wolox.com.ar' }).then(userFound => console.log(userFound));
+        userService.findBy({ email: 'franco.perez@wolox.com.ar' }).then(userFound => should.exist(userFound));
         dictum.chai(res);
       }));
   it('should fail when the email already exists', () =>
