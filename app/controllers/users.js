@@ -1,7 +1,8 @@
 const usersService = require('../services/users'),
   logger = require('../logger'),
   errors = require('../errors'),
-  bcryptService = require('../services/bcrypt');
+  bcryptService = require('../services/bcrypt'),
+  sessionManagerService = require('../services/sessionManager');
 
 exports.create = (req, res, next) =>
   usersService
@@ -17,6 +18,25 @@ exports.create = (req, res, next) =>
             logger.info(`The user ${newUser} was created successfully`);
             res.status(201).send(newUser);
           });
+      }
+    })
+    .catch(next);
+
+exports.signIn = (req, res, next) =>
+  usersService
+    .findBy({ email: req.body.email })
+    .then(userFound => {
+      if (!userFound) {
+        logger.info(
+          `The user with email: ${req.body.email} and password: ${req.body.password} could not be found`
+        );
+        throw errors.userNotFound(
+          `The user with email: ${req.body.email} and password: ${req.body.password} could not be found`
+        );
+      } else {
+        const userToken = sessionManagerService.createUserToken(userFound.password);
+        logger.info(`The token ${userToken} was created successfully`);
+        res.status(201).send(userToken);
       }
     })
     .catch(next);

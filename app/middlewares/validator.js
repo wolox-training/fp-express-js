@@ -3,6 +3,8 @@ const { check, validationResult } = require('express-validator/check'),
 
 const userFields = ['firstName', 'lastName', 'password', 'email'];
 
+const signInFields = ['password', 'email'];
+
 const validateErrors = (req, res, next) => {
   const validationErrors = validationResult(req);
   if (!validationResult(req).isEmpty()) {
@@ -29,3 +31,5 @@ const checkPassword = check('password')
   .withMessage('must have only letters and numbers');
 
 exports.signUpValidator = [checkEmptyField(userFields), checkEmail, checkPassword, validateErrors];
+
+exports.signInValidator = [checkEmptyField(signInFields), checkEmail, checkPassword, validateErrors];
