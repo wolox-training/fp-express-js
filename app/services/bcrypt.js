@@ -1,3 +1,7 @@
 const bcrypt = require('bcryptjs');
 
-exports.encryptPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync());
+const salt = bcrypt.genSaltSync();
+
+exports.encryptPassword = password => bcrypt.hashSync(password, salt);
+
+exports.comparePassword = (password, hash) => bcrypt.compare(password, hash);

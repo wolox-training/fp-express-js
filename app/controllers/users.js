@@ -27,16 +27,19 @@ exports.signIn = (req, res, next) =>
     .findBy({ email: req.body.email })
     .then(userFound => {
       if (!userFound) {
-        logger.info(
-          `The user with email: ${req.body.email} and password: ${req.body.password} could not be found`
-        );
-        throw errors.userNotFound(
-          `The user with email: ${req.body.email} and password: ${req.body.password} could not be found`
-        );
+        logger.info(`The user with email: ${req.body.email} could not be found`);
+        throw errors.userNotFound(`The user with email: ${req.body.email} could not be found`);
       } else {
-        const userToken = sessionManagerService.createUserToken(userFound.password);
-        logger.info(`The token ${userToken} was created successfully`);
-        res.status(201).send(userToken);
+        return bcryptService.comparePassword(req.body.password, userFound.password).then(isSamePassword => {
+          if (isSamePassword) {
+            const userToken = sessionManagerService.createToken(userFound.password);
+            logger.info(`The token ${userToken} was created successfully`);
+            res.status(200).send({ token: userToken });
+          } else {
+            logger.info(`The password: ${req.body.password} is not valid`);
+            throw errors.invalidPassword(`The password: ${req.body.password} is not valid`);
+          }
+        });
       }
     })
     .catch(next);

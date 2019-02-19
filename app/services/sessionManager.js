@@ -5,4 +5,6 @@ const jwt = require('jwt-simple'),
 
 const sessionSecret = config.common.session.secret;
 
-exports.createUserToken = userPassword => jwt.encode(userPassword, sessionSecret);
+exports.createToken = userPassword => jwt.encode(userPassword, sessionSecret);
+
+exports.decodeToken = token => jwt.decode(token, sessionSecret);
