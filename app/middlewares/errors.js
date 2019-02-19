@@ -6,7 +6,7 @@ const DEFAULT_STATUS_CODE = 500;
 const statusCodes = {
   [errors.BAD_REQUEST]: 400,
   [errors.DATABASE_ERROR]: 422,
-  [errors.USER_ALREADY_EXISTS]: 500,
+  [errors.USER_ALREADY_EXISTS]: 422,
   [errors.DEFAULT_ERROR]: 500
 };
 
