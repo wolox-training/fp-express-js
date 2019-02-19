@@ -5,6 +5,14 @@ const chai = require('chai'),
   userService = require('../app/services/users');
 
 describe('/users POST', () => {
+  beforeEach('create test user in db', () =>
+    userService.create({
+      firstName: 'test',
+      lastName: 'wolox',
+      email: 'test@wolox.com.ar',
+      password: '12345678'
+    })
+  );
   it('should be successful signing up', () =>
     chai
       .request(server)

@@ -25,7 +25,7 @@ beforeEach('drop tables, re-create them and populate sample data', done => {
     return models.sequelize
       .query(`TRUNCATE TABLE ${tableExpression} RESTART IDENTITY`)
       .then(() => {
-        return dataCreation.execute(models);
+        return dataCreation.execute();
       })
       .then(() => done());
   });
