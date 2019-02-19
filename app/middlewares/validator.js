@@ -1,5 +1,7 @@
 const { check, validationResult } = require('express-validator/check'),
-  errors = require('../errors');
+  errors = require('../errors'),
+  logger = require('../logger'),
+  sessionManager = require('../services/sessionManager');
 
 const userFields = ['firstName', 'lastName', 'password', 'email'];
 
@@ -33,3 +35,13 @@ const checkPassword = check('password')
 exports.signUpValidator = [checkEmptyField(userFields), checkEmail, checkPassword, validateErrors];
 
 exports.signInValidator = [checkEmptyField(signInFields), checkEmail, checkPassword, validateErrors];
+
+exports.authValidator = (req, res, next) => {
+  const userToken = req.headers[sessionManager.HEADER_NAME];
+  if (!userToken) {
+    logger.info(`The user is not logged in`);
+    throw errors.userNotAuthorized(`The user is not logged in`);
+  } else {
+    next();
+  }
+};

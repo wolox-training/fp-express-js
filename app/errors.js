@@ -8,6 +8,8 @@ exports.USER_NOT_FOUND = 'USER_NOT_FOUND';
 
 exports.INVALID_PASSWORD = 'INVALID_PASSWORD';
 
+exports.USER_NOT_AUTHORIZED = 'USER_NOT_AUTHORIZED';
+
 exports.DEFAULT_ERROR = 'DEFAULT_ERROR';
 
 const internalError = (message, internalCode) => ({
@@ -21,4 +23,5 @@ exports.userAlreadyExists = message => internalError(message, exports.USER_ALREA
 exports.defaultError = message => internalError(message, exports.DEFAULT_ERROR);
 exports.userNotFound = message => internalError(message, exports.USER_NOT_FOUND);
 exports.invalidPassword = message => internalError(message, exports.INVALID_PASSWORD);
+exports.userNotAuthorized = message => internalError(message, exports.USER_NOT_AUTHORIZED);
 exports.internalServerError = message => internalError(message, exports.INTERNAL_SERVER_ERROR);
