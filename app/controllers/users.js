@@ -36,8 +36,8 @@ exports.signIn = (req, res, next) =>
             logger.info(`The token ${userToken} was created successfully`);
             res.status(200).send({ token: userToken });
           } else {
-            logger.info(`The password: ${req.body.password} is not valid`);
-            throw errors.invalidPassword(`The password: ${req.body.password} is not valid`);
+            logger.info('The credentials are not valid');
+            throw errors.invalidPassword('The credentials are not valid');
           }
         });
       }
