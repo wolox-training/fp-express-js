@@ -8,15 +8,15 @@ const chai = require('chai'),
   expect = chai.expect;
 
 describe('users controller', () => {
-  describe('/users POST', () => {
-    beforeEach('create test user in db', () =>
-      userService.create({
-        firstName: 'test',
-        lastName: 'wolox',
-        email: 'test@wolox.com.ar',
-        password: bcryptService.encryptPassword('12345678')
-      })
-    );
+  beforeEach('create test user in db', () =>
+    userService.create({
+      firstName: 'test',
+      lastName: 'wolox',
+      email: 'test@wolox.com.ar',
+      password: bcryptService.encryptPassword('12345678')
+    })
+  );
+  describe('/users POST sign up', () => {
     it('should be successful signing up', () =>
       chai
         .request(server)
@@ -77,6 +77,8 @@ describe('users controller', () => {
           res.body.message[0].param.should.equal('firstName');
           res.body.message[0].msg.should.equal('can not be empty');
         }));
+  });
+  describe('/users POST sign in', () => {
     it('should be successful signing in', () =>
       chai
         .request(server)
@@ -114,7 +116,7 @@ describe('users controller', () => {
         })
         .then(res => {
           res.should.have.status(422);
-          res.body.message.should.equal('The password: 11122233 is not valid');
+          res.body.message.should.equal('The credentials are not valid');
         }));
     it('should fail when password is to shoort while signing in', () =>
       chai
@@ -140,18 +142,6 @@ describe('users controller', () => {
           res.should.have.status(422);
           res.body.message[0].param.should.equal('password');
           res.body.message[0].msg.should.equal('can not be empty');
-        }));
-  });
-  describe('/users GET', () => {
-    it('should be successful getting the users list', () =>
-      chai
-        .request(server)
-        .get('/users')
-        .set(sessionManagerService.HEADER_NAME, 'TestToken')
-        .then(res => {
-          res.should.have.status(200);
-          res.body.should.be.a('array');
-          dictum.chai(res);
         }));
   });
 });
