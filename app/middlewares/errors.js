@@ -9,7 +9,7 @@ const statusCodes = {
   [errors.USER_ALREADY_EXISTS]: 422,
   [errors.USER_NOT_FOUND]: 404,
   [errors.INVALID_PASSWORD]: 422,
-  [errors.USER_NOT_LOGGED_IN]: 400,
+  [errors.USER_NOT_AUTHORIZED]: 400,
   [errors.USER_ALREADY_ADMIN]: 400,
   [errors.DEFAULT_ERROR]: 500
 };
