@@ -176,5 +176,15 @@ describe('users controller', () => {
           res.body.message[0].param.should.equal('offset');
           res.body.message[0].msg.should.equal('must be a number');
         }));
+    it('should be successful getting the user list with a limit passed by query param', () =>
+      chai
+        .request(server)
+        .get('/users?limit=0')
+        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .then(res => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body.should.have.lengthOf(0);
+        }));
   });
 });

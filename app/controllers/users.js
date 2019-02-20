@@ -46,7 +46,7 @@ exports.signIn = (req, res, next) =>
 
 exports.getUsers = (req, res, next) =>
   usersService
-    .findAll(req.query.limit, req.query.offset)
+    .findAllBy(req.query.limit, req.query.offset)
     .then(userList => {
       logger.info(`The user list: ${userList} was retrieved successfully`);
       res.status(200).send(userList);
