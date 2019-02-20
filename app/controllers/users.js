@@ -56,17 +56,22 @@ exports.getUsers = (req, res, next) =>
 exports.createAdmin = (req, res, next) =>
   usersService
     .findBy({ email: req.body.email })
-    .then(adminUserFound => {
-      if (adminUserFound) {
-        return usersService.update({ email: req.body.email }, { isAdmin: true }).then(newAdminUser => {
-          logger.info(`The user ${newAdminUser} was updated as admin successfully`);
-          res.status(201).send(newAdminUser);
-        });
+    .then(userFound => {
+      if (userFound) {
+        if (userFound.isAdmin) {
+          logger.info(`The user ${userFound} is already an admin`);
+          throw errors.userAlreadyAdmin(`The user with email: ${userFound.email} is already an admin`);
+        } else {
+          return usersService.update(userFound, { isAdmin: true }).then(adminUser => {
+            logger.info(`The user ${adminUser} was updated as admin successfully`);
+            res.status(201).send(adminUser);
+          });
+        }
       } else {
         return usersService
           .createAdmin({ ...req.body, password: bcryptService.encryptPassword(req.body.password) })
           .then(newAdminUser => {
-            logger.info(`The user ${newAdminUser} was created successfully`);
+            logger.info(`The user ${newAdminUser} was created successfully as an admin`);
             res.status(201).send(newAdminUser);
           });
       }

@@ -7,5 +7,5 @@ exports.init = app => {
   app.post('/users', [signUpValidator], users.create),
     app.post('/users/sessions', [signInValidator], users.signIn),
     app.get('/users', [authValidator], users.getUsers),
-    app.post('/admin/users', [signUpValidator], users.createAdmin);
+    app.post('/admin/users', [authValidator, signUpValidator], users.createAdmin);
 };

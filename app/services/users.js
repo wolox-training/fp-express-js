@@ -26,8 +26,8 @@ exports.createAdmin = userFields =>
     throw errors.databaseError(error.message);
   });
 
-exports.update = (condition, newUserFields) =>
-  user.update({ ...newUserFields }, { where: condition }).catch(error => {
+exports.update = (userToUpdate, newUserFields) =>
+  userToUpdate.update(newUserFields).catch(error => {
     logger.info(`Failed to create the admin user. ${error}`);
     throw errors.databaseError(error.message);
   });
