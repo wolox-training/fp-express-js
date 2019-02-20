@@ -14,9 +14,9 @@
   "firstName": "Harry",
   "lastName": "Potter",
   "email": "harry.perez@wolox.com.ar",
-  "password": "$2a$10$8YU44ZoLUE//ONGrbROLZu9DO5Vuzbq8vxxAe8cI3/XPtdIvkBi3S",
-  "updatedAt": "2019-02-19T19:38:36.044Z",
-  "createdAt": "2019-02-19T19:38:36.044Z",
+  "password": "$2a$10$e2J8IxUNLek9NHxLYQzFu.Q.UVWJaI7KNzPJ4Jse2upPnZuJ5ZFmS",
+  "updatedAt": "2019-02-20T17:37:52.542Z",
+  "createdAt": "2019-02-20T17:37:52.542Z",
   "deletedAt": null
 }</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-sessions-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-sessions-POST" href="#collapse-users-sessions-POST">POST /users/sessions</a></h4></div><div id="collapse-users-sessions-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-sessions-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
   "content-type": "application/json",
@@ -28,5 +28,20 @@
   "content-type": "application/json",
   "content-length": 51
 }</pre><h5>Body</h5><pre>{
-  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IiQyYSQxMCQ4WVU0NFpvTFVFLy9PTkdyYlJPTFp1OURPNVZ1emJxOHZ4eEFlOGNJMy9YUHRkSXZrQmkzUyI.JNsHGXCPBVRLisLgnvwqPfO1cmLek2JV70HClQ1VKPw"
-}</pre></div></div></div></div></div></body></html>
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IiQyYSQxMCRlMko4SXhVTkxlazlOSHhMWVF6RnUuUS5VVldKYUk3S056UEo0SnNlMnVwUG5adUo1WkZtUyI.8hlmMgMUgBR-UMMKK5t8tqgyNS2yA7YpPJQFWCE9tPA"
+}</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-GET"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-GET" href="#collapse-users-GET">GET /users</a></h4></div><div id="collapse-users-GET" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-GET"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "authorization": "TestToken"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 200</h5><h5>Headers</h5><pre>{
+  "authorization": "TestToken"
+}</pre><h5>Body</h5><pre>[
+  {
+    "id": 1,
+    "firstName": "test",
+    "lastName": "wolox",
+    "email": "test@wolox.com.ar",
+    "password": "$2a$10$e2J8IxUNLek9NHxLYQzFu.Q.UVWJaI7KNzPJ4Jse2upPnZuJ5ZFmS",
+    "createdAt": "2019-02-20T17:37:53.703Z",
+    "updatedAt": "2019-02-20T17:37:53.703Z",
+    "deletedAt": null
+  }
+]</pre></div></div></div></div></div></body></html>

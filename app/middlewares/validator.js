@@ -7,10 +7,12 @@ const userFields = ['firstName', 'lastName', 'password', 'email'];
 
 const signInFields = ['password', 'email'];
 
+const paginationFields = ['limit', 'offset'];
+
 const validateErrors = (req, res, next) => {
   const validationErrors = validationResult(req);
   if (!validationResult(req).isEmpty()) {
-    throw errors.databaseError(validationErrors.array());
+    throw errors.badRequest(validationErrors.array());
   }
   next();
 };
@@ -32,11 +34,13 @@ const checkPassword = check('password')
   .matches(/^[a-zA-Z0-9]+$/)
   .withMessage('must have only letters and numbers');
 
-exports.signUpValidator = [checkEmptyField(userFields), checkEmail, checkPassword, validateErrors];
+const checkOptionalNumericField = fields =>
+  check(fields)
+    .optional()
+    .isInt()
+    .withMessage('must be a number');
 
-exports.signInValidator = [checkEmptyField(signInFields), checkEmail, checkPassword, validateErrors];
-
-exports.authValidator = (req, res, next) => {
+const validateUserToken = (req, res, next) => {
   const userToken = req.headers[sessionManager.HEADER_NAME];
   if (!userToken) {
     logger.info(`The user is not logged in`);
@@ -45,3 +49,9 @@ exports.authValidator = (req, res, next) => {
     next();
   }
 };
+
+exports.signUpValidator = [checkEmptyField(userFields), checkEmail, checkPassword, validateErrors];
+
+exports.signInValidator = [checkEmptyField(signInFields), checkEmail, checkPassword, validateErrors];
+
+exports.authValidator = [checkOptionalNumericField(paginationFields), validateUserToken, validateErrors];
