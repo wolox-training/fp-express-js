@@ -13,3 +13,9 @@ exports.findBy = condition =>
     logger.error(`Failed to retrieve user from database. ${error}`);
     throw errors.databaseError(error.message);
   });
+
+exports.findAllBy = (limit = 5, offset = 0, condition) =>
+  user.findAll({ limit, offset }, { where: condition }).catch(error => {
+    logger.error(`Failed to retrieve users from database. ${error}`);
+    throw errors.databaseError(error.message);
+  });

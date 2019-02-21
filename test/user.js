@@ -59,7 +59,7 @@ describe('users controller', () => {
           password: '1234567'
         })
         .then(res => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.message[0].param.should.equal('password');
           res.body.message[0].msg.should.equal('must be at least 8 chars long');
         }));
@@ -73,7 +73,7 @@ describe('users controller', () => {
           password: '1234567'
         })
         .then(res => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.message[0].param.should.equal('firstName');
           res.body.message[0].msg.should.equal('can not be empty');
         }));
@@ -127,7 +127,7 @@ describe('users controller', () => {
           password: '1234567'
         })
         .then(res => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.message[0].param.should.equal('password');
           res.body.message[0].msg.should.equal('must be at least 8 chars long');
         }));
@@ -139,9 +139,61 @@ describe('users controller', () => {
           email: 'test@wolox.com.ar'
         })
         .then(res => {
-          res.should.have.status(422);
+          res.should.have.status(400);
           res.body.message[0].param.should.equal('password');
           res.body.message[0].msg.should.equal('can not be empty');
         }));
+  });
+  describe('/users GET user list', () => {
+    it('should be successful getting the user list', () =>
+      chai
+        .request(server)
+        .get('/users')
+        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .then(res => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body.should.have.lengthOf(1);
+          dictum.chai(res);
+        }));
+    it('should fail when limit query param is not a number', () =>
+      chai
+        .request(server)
+        .get('/users?limit=a')
+        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .then(res => {
+          res.should.have.status(400);
+          res.body.message[0].param.should.equal('limit');
+          res.body.message[0].msg.should.equal('must be a number');
+        }));
+    it('should fail when offset query param is not a number', () =>
+      chai
+        .request(server)
+        .get('/users?limit=2&offset=a')
+        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .then(res => {
+          res.should.have.status(400);
+          res.body.message[0].param.should.equal('offset');
+          res.body.message[0].msg.should.equal('must be a number');
+        }));
+    it('should be successful getting the user list with a limit passed by query param', () =>
+      userService
+        .create({
+          firstName: 'wol',
+          lastName: 'verine',
+          email: 'wolverine@wolox.com.ar',
+          password: bcryptService.encryptPassword('12345678')
+        })
+        .then(() =>
+          chai
+            .request(server)
+            .get('/users?limit=2')
+            .set(sessionManagerService.HEADER_NAME, 'TestToken')
+            .then(res => {
+              res.should.have.status(200);
+              res.body.should.be.a('array');
+              res.body.should.have.lengthOf(2);
+            })
+        ));
   });
 });

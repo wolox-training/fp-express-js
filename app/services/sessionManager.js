@@ -1,10 +1,10 @@
 const jwt = require('jwt-simple'),
-  logger = require('../logger'),
-  errors = require('../errors'),
   config = require('./../../config');
 
-const sessionSecret = config.common.session.secret;
+const SESSION_SECRET = config.common.session.secret;
 
-exports.createToken = userPassword => jwt.encode(userPassword, sessionSecret);
+exports.HEADER_NAME = config.common.session.header_name;
 
-exports.decodeToken = token => jwt.decode(token, sessionSecret);
+exports.createToken = userPassword => jwt.encode(userPassword, SESSION_SECRET);
+
+exports.decodeToken = token => jwt.decode(token, SESSION_SECRET);

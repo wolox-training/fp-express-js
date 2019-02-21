@@ -43,3 +43,12 @@ exports.signIn = (req, res, next) =>
       }
     })
     .catch(next);
+
+exports.getUsers = (req, res, next) =>
+  usersService
+    .findAllBy(req.query.limit, req.query.offset)
+    .then(userList => {
+      logger.info(`The user list: ${userList} was retrieved successfully`);
+      res.status(200).send(userList);
+    })
+    .catch(next);
