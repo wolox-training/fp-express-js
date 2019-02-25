@@ -19,3 +19,9 @@ exports.findAllBy = (limit = 5, offset = 0, condition) =>
     logger.error(`Failed to retrieve users from database. ${error}`);
     throw errors.databaseError(error.message);
   });
+
+exports.update = (userToUpdate, newUserFields) =>
+  userToUpdate.update(newUserFields).catch(error => {
+    logger.info(`Failed to create the admin user. ${error}`);
+    throw errors.databaseError(error.message);
+  });

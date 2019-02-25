@@ -196,4 +196,89 @@ describe('users controller', () => {
             })
         ));
   });
+  describe('/admin/users POST', () => {
+    it('should be successful creating a new admin when the user is not signed up but has authorization', () =>
+      chai
+        .request(server)
+        .post('/admin/users')
+        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .send({
+          firstName: 'Spider',
+          lastName: 'Man',
+          email: 'spider.man@wolox.com.ar',
+          password: '12345678'
+        })
+        .then(res => {
+          res.should.have.status(201);
+          userService.findBy({ email: 'spider.man@wolox.com.ar' }).then(userFound => {
+            should.exist(userFound);
+            userFound.isAdmin.should.be.true;
+          });
+          dictum.chai(res);
+        }));
+    it('should be successful updating an existing user as an admin', () =>
+      chai
+        .request(server)
+        .post('/admin/users')
+        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .send({
+          firstName: 'test',
+          lastName: 'wolox',
+          email: 'test@wolox.com.ar',
+          password: '12345678'
+        })
+        .then(res => {
+          res.should.have.status(200);
+          userService.findBy({ email: 'test@wolox.com.ar' }).then(userFound => {
+            should.exist(userFound);
+            userFound.isAdmin.should.be.true;
+          });
+          dictum.chai(res);
+        }));
+    it('should fail when there is no authorization in the request', () =>
+      chai
+        .request(server)
+        .post('/admin/users')
+        .send({
+          firstName: 'test',
+          lastName: 'wolox',
+          email: 'test@wolox.com.ar',
+          password: '12345678'
+        })
+        .then(res => {
+          res.should.have.status(400);
+          res.body.message.should.equal('The user is not logged in');
+        }));
+    it('should fail when the password is too short while creating a new admin user', () =>
+      chai
+        .request(server)
+        .post('/admin/users')
+        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .send({
+          firstName: 'test',
+          lastName: 'wolox',
+          email: 'test@wolox.com.ar',
+          password: '1234567'
+        })
+        .then(res => {
+          res.should.have.status(400);
+          res.body.message[0].param.should.equal('password');
+          res.body.message[0].msg.should.equal('must be at least 8 chars long');
+        }));
+    it('should fail when some field does not exist while creating a new admin user', () =>
+      chai
+        .request(server)
+        .post('/admin/users')
+        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .send({
+          lastName: 'wolox',
+          email: 'test@wolox.com.ar',
+          password: '1234567'
+        })
+        .then(res => {
+          res.should.have.status(400);
+          res.body.message[0].param.should.equal('firstName');
+          res.body.message[0].msg.should.equal('can not be empty');
+        }));
+  });
 });

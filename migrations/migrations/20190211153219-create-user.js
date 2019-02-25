@@ -34,6 +34,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
+      isAdmin: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN
+      },
       deletedAt: { type: Sequelize.DATE }
     }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('users')
