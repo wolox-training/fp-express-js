@@ -5,6 +5,6 @@ const SESSION_SECRET = config.common.session.secret;
 
 exports.HEADER_NAME = config.common.session.header_name;
 
-exports.createToken = userPassword => jwt.encode(userPassword, SESSION_SECRET);
+exports.createToken = userData => jwt.encode(userData, SESSION_SECRET);
 
 exports.decodeToken = token => jwt.decode(token, SESSION_SECRET);

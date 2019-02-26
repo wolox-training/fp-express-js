@@ -32,7 +32,10 @@ exports.signIn = (req, res, next) =>
       } else {
         return bcryptService.comparePassword(req.body.password, userFound.password).then(isSamePassword => {
           if (isSamePassword) {
-            const userToken = sessionManagerService.createToken(userFound.password);
+            const userToken = sessionManagerService.createToken({
+              email: userFound.email,
+              password: userFound.password
+            });
             logger.info(`The token ${userToken} was created successfully`);
             res.status(200).send({ token: userToken });
           } else {

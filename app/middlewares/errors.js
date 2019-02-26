@@ -11,6 +11,7 @@ const statusCodes = {
   [errors.INVALID_PASSWORD]: 422,
   [errors.USER_NOT_AUTHORIZED]: 400,
   [errors.USER_ALREADY_ADMIN]: 400,
+  [errors.ALBUM_ALREADY_BOUGHT]: 400,
   [errors.DEFAULT_ERROR]: 500
 };
 
