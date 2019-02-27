@@ -58,4 +58,24 @@ describe('albums controller', () => {
           res.body.message.should.equal('The user with email: not-exist@wolox.com.ar could not be found');
         }));
   });
+  describe('/albums GET list', () => {
+    it('should be successful getting albums list', () =>
+      chai
+        .request(server)
+        .get('/albums/')
+        .set(sessionManagerService.HEADER_NAME, testToken)
+        .then(res => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          dictum.chai(res);
+        }));
+    it('should fail when the user is not logged in', () =>
+      chai
+        .request(server)
+        .get('/albums')
+        .then(res => {
+          res.should.have.status(400);
+          res.body.message.should.equal('The user is not logged in');
+        }));
+  });
 });

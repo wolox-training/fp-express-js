@@ -1,4 +1,4 @@
-const albums = require('../services/albums'),
+const albumsService = require('../services/albums'),
   usersService = require('../services/users'),
   sessionManagerService = require('../services/sessionManager'),
   logger = require('../logger'),
@@ -13,14 +13,14 @@ exports.create = (req, res, next) => {
         logger.info(`The user with email: ${userData.email} could not be found`);
         throw errors.userNotFound(`The user with email: ${userData.email} could not be found`);
       } else {
-        return albums.findBy({ albumId: req.params.id, userId: userFound.id }).then(albumFound => {
+        return albumsService.findBy({ albumId: req.params.id, userId: userFound.id }).then(albumFound => {
           if (albumFound) {
             logger.info(`The album with id: ${req.params.id} was already bought by the user`);
             throw errors.albumAlreadyBought(
               `The album with id: ${req.params.id} was already bought by the user`
             );
           } else {
-            return albums.create(req.params.id, userFound.id).then(album => {
+            return albumsService.create(req.params.id, userFound.id).then(album => {
               logger.info(`The album ${album} was bought successfully`);
               res.status(201).send(album);
             });
@@ -30,3 +30,12 @@ exports.create = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getAlbums = (req, res, next) =>
+  albumsService
+    .findAll()
+    .then(albumList => {
+      logger.info(`The album list: ${albumList.data} was retrieved successfully`);
+      res.status(200).send(albumList.data);
+    })
+    .catch(next);

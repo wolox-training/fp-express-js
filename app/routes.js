@@ -9,5 +9,6 @@ exports.init = app => {
     app.post('/users/sessions', [signInValidator], users.signIn),
     app.get('/users', [authValidator], users.getUsers),
     app.post('/admin/users', [authValidator, signUpValidator], users.createAdmin),
-    app.post('/albums/:id', [authValidator], albums.create);
+    app.post('/albums/:id', [authValidator], albums.create),
+    app.get('/albums', [authValidator], albums.getAlbums);
 };
