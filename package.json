@@ -47,6 +47,7 @@
     "express-validator": "^5.3.1",
     "jwt-simple": "^0.5.1",
     "morgan": "^1.9.1",
+    "nock": "^10.0.6",
     "pg": "^7.4.1",
     "rollbar": "^2.3.9",
     "sequelize": "^4.34.0",

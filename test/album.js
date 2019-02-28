@@ -2,6 +2,7 @@ const chai = require('chai'),
   dictum = require('dictum.js'),
   server = require('../app'),
   should = chai.should(),
+  nock = require('nock'),
   albumService = require('../app/services/albums'),
   userService = require('../app/services/users'),
   bcryptService = require('../app/services/bcrypt'),
@@ -9,6 +10,31 @@ const chai = require('chai'),
 
 const testToken = sessionManagerService.createToken({ email: 'test@wolox.com.ar' });
 const wrongToken = sessionManagerService.createToken({ email: 'not-exist@wolox.com.ar' });
+
+const albumsNock = nock('https://jsonplaceholder.typicode.com')
+  .get('/albums')
+  .reply(200, [
+    {
+      userId: '1',
+      id: '1',
+      title: 'quidem molestiae enim'
+    },
+    {
+      userId: '2',
+      id: '2',
+      title: 'no vimo'
+    }
+  ]);
+
+const albumNock = nock('https://jsonplaceholder.typicode.com')
+  .get('/albums?id=2')
+  .reply(200, [
+    {
+      userId: '1',
+      id: '2',
+      title: 'Batman rules'
+    }
+  ]);
 
 describe('albums controller', () => {
   beforeEach('create test user in db', () =>
@@ -19,7 +45,7 @@ describe('albums controller', () => {
       password: bcryptService.encryptPassword('12345678')
     })
   );
-  beforeEach('create test user and album in db', () => albumService.create('1', '1'));
+  beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
   describe('/albums POST buy', () => {
     it('should be successful buying a new album', () =>
       chai
@@ -28,7 +54,9 @@ describe('albums controller', () => {
         .set(sessionManagerService.HEADER_NAME, testToken)
         .then(res => {
           res.should.have.status(201);
-          albumService.findBy({ albumId: '2', userId: '1' }).then(albumFound => should.exist(albumFound));
+          albumService
+            .findBy({ albumId: '2', title: 'Batman rules', userId: '1' })
+            .then(albumFound => should.exist(albumFound));
           dictum.chai(res);
         }));
     it('should fail when buying a album that has been bought by the same user', () =>

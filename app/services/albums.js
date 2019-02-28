@@ -3,8 +3,14 @@ const album = require('../models').album,
   errors = require('../errors'),
   axios = require('axios');
 
-exports.create = (albumId, userId) =>
-  album.create({ albumId, userId }).catch(error => {
+exports.findByIdFromApi = albumId =>
+  axios.get(`${process.env.ALBUMS_URL}?id=${albumId}`).catch(error => {
+    logger.info(`Failed to retrieve the album from api. ${error}`);
+    throw errors.internalServerError(error.message);
+  });
+
+exports.create = (albumInfo, userId) =>
+  album.create({ albumId: albumInfo.id, title: albumInfo.title, userId }).catch(error => {
     logger.info(`Failed to create the album. ${error}`);
     throw errors.databaseError(error.message);
   });

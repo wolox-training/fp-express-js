@@ -14,6 +14,8 @@ exports.USER_ALREADY_ADMIN = 'USER_ALREADY_ADMIN';
 
 exports.ALBUM_ALREADY_BOUGHT = 'ALBUM_ALREADY_BOUGHT';
 
+exports.ALBUM_NOT_FOUND = 'ALBUM_NOT_FOUND';
+
 exports.DEFAULT_ERROR = 'DEFAULT_ERROR';
 
 const internalError = (message, internalCode) => ({
@@ -30,4 +32,5 @@ exports.invalidPassword = message => internalError(message, exports.INVALID_PASS
 exports.userNotAuthorized = message => internalError(message, exports.USER_NOT_AUTHORIZED);
 exports.userAlreadyAdmin = message => internalError(message, exports.USER_ALREADY_ADMIN);
 exports.albumAlreadyBought = message => internalError(message, exports.ALBUM_ALREADY_BOUGHT);
+exports.albumNotFound = message => internalError(message, exports.ALBUM_NOT_FOUND);
 exports.internalServerError = message => internalError(message, exports.INTERNAL_SERVER_ERROR);
