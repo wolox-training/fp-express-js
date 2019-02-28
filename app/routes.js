@@ -11,5 +11,6 @@ exports.init = app => {
     app.post('/admin/users', [authValidator, signUpValidator], users.createAdmin),
     app.post('/albums/:id', [authValidator], albums.create),
     app.get('/albums', [authValidator], albums.getAlbums),
-    app.get('/users/:id/albums', [authValidator], users.getAlbums);
+    app.get('/users/:id/albums', [authValidator], users.getAlbums),
+    app.get('/users/albums/:id/photos', [authValidator], albums.getAlbumPictures);
 };

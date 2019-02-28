@@ -32,3 +32,9 @@ exports.findAllBy = condition =>
     logger.error(`Failed to retrieve albums from database. ${error}`);
     throw errors.databaseError(error.message);
   });
+
+exports.findAlbumPictures = albumId =>
+  axios.get(`${process.env.PHOTOS_URL}?albumId=${albumId}`).catch(error => {
+    logger.info(`Failed to retrieve the album pictures from api. ${error}`);
+    throw errors.internalServerError(error.message);
+  });

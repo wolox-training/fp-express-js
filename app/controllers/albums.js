@@ -46,3 +46,28 @@ exports.getAlbums = (req, res, next) =>
       res.status(200).send(albumList.data);
     })
     .catch(next);
+
+exports.getAlbumPictures = (req, res, next) => {
+  const userData = sessionManagerService.decodeToken(req.headers[sessionManagerService.HEADER_NAME]);
+  return usersService
+    .findBy({ email: userData.email })
+    .then(userFound => {
+      if (!userFound) {
+        logger.info(`The user with email: ${userData.email} could not be found`);
+        throw errors.userNotFound(`The user with email: ${userData.email} could not be found`);
+      } else {
+        return albumsService.findBy({ albumId: req.params.id, userId: userData.id }).then(albumBought => {
+          if (!albumBought) {
+            logger.info(`The user ${userFound.email} has not bought any album`);
+            throw errors.albumNotFound(`The user ${userFound.email} has not bought any album`);
+          } else {
+            return albumsService.findAlbumPictures(albumBought.id).then(pictures => {
+              logger.info(`The album ${albumBought.id} has this pictures: ${pictures.data}`);
+              res.status(200).send(pictures.data);
+            });
+          }
+        });
+      }
+    })
+    .catch(next);
+};

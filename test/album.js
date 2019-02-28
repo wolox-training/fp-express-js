@@ -8,7 +8,12 @@ const chai = require('chai'),
   bcryptService = require('../app/services/bcrypt'),
   sessionManagerService = require('../app/services/sessionManager');
 
-const testToken = sessionManagerService.createToken({ email: 'test@wolox.com.ar' });
+const testToken = sessionManagerService.createToken({
+  id: 1,
+  email: 'test@wolox.com.ar',
+  password: '12345678'
+});
+
 const wrongToken = sessionManagerService.createToken({ email: 'not-exist@wolox.com.ar' });
 
 const albumsNock = nock('https://jsonplaceholder.typicode.com')
@@ -36,6 +41,25 @@ const albumNock = nock('https://jsonplaceholder.typicode.com')
     }
   ]);
 
+const photosNock = nock('https://jsonplaceholder.typicode.com')
+  .get('/photos?albumId=1')
+  .reply(200, [
+    {
+      albumId: '1',
+      id: '1',
+      title: 'quidem molestiae enim',
+      url: 'testurl',
+      thumbnailUrl: 'testurl'
+    },
+    {
+      albumId: '1',
+      id: '1',
+      title: 'quidem molestiae enim',
+      url: 'testurl',
+      thumbnailUrl: 'testurl'
+    }
+  ]);
+
 describe('albums controller', () => {
   beforeEach('create test user in db', () =>
     userService.create({
@@ -46,6 +70,7 @@ describe('albums controller', () => {
     })
   );
   beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
+  beforeEach('create test album in db', () => albumService.create({ id: '2', title: 'robin' }, '2'));
   describe('/albums POST buy', () => {
     it('should be successful buying a new album', () =>
       chai
@@ -104,6 +129,35 @@ describe('albums controller', () => {
         .then(res => {
           res.should.have.status(400);
           res.body.message.should.equal('The user is not logged in');
+        }));
+  });
+  describe('/users/albums/:id/photos GET photos list', () => {
+    it('should be successful getting album photos', () =>
+      chai
+        .request(server)
+        .get('/users/albums/1/photos')
+        .set(sessionManagerService.HEADER_NAME, testToken)
+        .then(res => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          dictum.chai(res);
+        }));
+    it('should fail when the user is not logged in', () =>
+      chai
+        .request(server)
+        .get('/users/albums/1/photos')
+        .then(res => {
+          res.should.have.status(400);
+          res.body.message.should.equal('The user is not logged in');
+        }));
+    it('should fail when the user try to get photos from an album that does not belong to him', () =>
+      chai
+        .request(server)
+        .get('/users/albums/2/photos')
+        .set(sessionManagerService.HEADER_NAME, testToken)
+        .then(res => {
+          res.should.have.status(404);
+          res.body.message.should.equal('The user test@wolox.com.ar has not bought any album');
         }));
   });
 });
