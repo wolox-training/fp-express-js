@@ -2,10 +2,34 @@ const chai = require('chai'),
   dictum = require('dictum.js'),
   server = require('../app'),
   should = chai.should(),
+  nock = require('nock'),
   userService = require('../app/services/users'),
+  albumService = require('../app/services/albums'),
   bcryptService = require('../app/services/bcrypt'),
   sessionManagerService = require('../app/services/sessionManager'),
   expect = chai.expect;
+
+const testToken = sessionManagerService.createToken({
+  id: 1,
+  email: 'test@wolox.com.ar',
+  password: '12345678'
+});
+
+const adminToken = sessionManagerService.createToken({
+  id: 2,
+  email: 'admin@wolox.com.ar',
+  password: '12345678'
+});
+
+const albumNock = nock('https://jsonplaceholder.typicode.com')
+  .get('/albums?id=1')
+  .reply(200, [
+    {
+      userId: '1',
+      id: '2',
+      title: 'Batman rules'
+    }
+  ]);
 
 describe('users controller', () => {
   beforeEach('create test user in db', () =>
@@ -16,6 +40,16 @@ describe('users controller', () => {
       password: bcryptService.encryptPassword('12345678')
     })
   );
+  beforeEach('create admin test user in db', () =>
+    userService.create({
+      firstName: 'admin',
+      lastName: 'adminazo',
+      email: 'admin@wolox.com.ar',
+      password: bcryptService.encryptPassword('12345678'),
+      isAdmin: true
+    })
+  );
+  beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
   describe('/users POST sign up', () => {
     it('should be successful signing up', () =>
       chai
@@ -153,7 +187,7 @@ describe('users controller', () => {
         .then(res => {
           res.should.have.status(200);
           res.body.should.be.a('array');
-          res.body.should.have.lengthOf(1);
+          res.body.should.have.lengthOf(2);
           dictum.chai(res);
         }));
     it('should fail when limit query param is not a number', () =>
@@ -279,6 +313,40 @@ describe('users controller', () => {
           res.should.have.status(400);
           res.body.message[0].param.should.equal('firstName');
           res.body.message[0].msg.should.equal('can not be empty');
+        }));
+  });
+  describe('/users/id/albums GET', () => {
+    it('should be successful getting albums when the user retrieves his bought albums', () =>
+      chai
+        .request(server)
+        .get('/users/1/albums')
+        .set(sessionManagerService.HEADER_NAME, testToken)
+        .then(res => {
+          res.should.have.status(200);
+          res.body[0].id.should.equal(1);
+          res.body.should.be.a('array');
+          dictum.chai(res);
+        }));
+    it('should fail when the user tries to get albums from another user', () =>
+      chai
+        .request(server)
+        .get('/users/2/albums')
+        .set(sessionManagerService.HEADER_NAME, testToken)
+        .then(res => {
+          res.should.have.status(403);
+          res.body.message.should.equal(
+            'The user test@wolox.com.ar does not have permissions to get the info'
+          );
+        }));
+    it('should be successful getting albums from another user when he is admin', () =>
+      chai
+        .request(server)
+        .get('/users/1/albums')
+        .set(sessionManagerService.HEADER_NAME, adminToken)
+        .then(res => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          dictum.chai(res);
         }));
   });
 });

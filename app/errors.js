@@ -16,6 +16,8 @@ exports.ALBUM_ALREADY_BOUGHT = 'ALBUM_ALREADY_BOUGHT';
 
 exports.ALBUM_NOT_FOUND = 'ALBUM_NOT_FOUND';
 
+exports.USER_WITHOUT_PERMISSIONS = 'USER_WITHOUT_PERMISSIONS';
+
 exports.DEFAULT_ERROR = 'DEFAULT_ERROR';
 
 const internalError = (message, internalCode) => ({
@@ -33,4 +35,5 @@ exports.userNotAuthorized = message => internalError(message, exports.USER_NOT_A
 exports.userAlreadyAdmin = message => internalError(message, exports.USER_ALREADY_ADMIN);
 exports.albumAlreadyBought = message => internalError(message, exports.ALBUM_ALREADY_BOUGHT);
 exports.albumNotFound = message => internalError(message, exports.ALBUM_NOT_FOUND);
+exports.userWithoutPermissions = message => internalError(message, exports.USER_WITHOUT_PERMISSIONS);
 exports.internalServerError = message => internalError(message, exports.INTERNAL_SERVER_ERROR);

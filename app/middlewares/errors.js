@@ -13,6 +13,7 @@ const statusCodes = {
   [errors.USER_ALREADY_ADMIN]: 400,
   [errors.ALBUM_ALREADY_BOUGHT]: 400,
   [errors.ALBUM_NOT_FOUND]: 404,
+  [errors.USER_WITHOUT_PERMISSIONS]: 403,
   [errors.DEFAULT_ERROR]: 500
 };
 
