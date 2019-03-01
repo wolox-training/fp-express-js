@@ -122,11 +122,12 @@ describe('users controller', () => {
           password: '12345678'
         })
         .then(res => {
+          const token = sessionManagerService.decodeToken(res.body.token);
           res.should.have.status(200);
-          bcryptService
-            .comparePassword('12345678', sessionManagerService.decodeToken(res.body.token))
-            .then(isSamePassword => expect(isSamePassword).to.be.true);
-          dictum.chai(res);
+          bcryptService.comparePassword('12345678', token.password).then(isSamePassword => {
+            expect(isSamePassword).to.be.true;
+            dictum.chai(res);
+          });
         }));
     it('should fail when the user is not signed up', () =>
       chai
@@ -262,7 +263,7 @@ describe('users controller', () => {
           password: '12345678'
         })
         .then(res => {
-          res.should.have.status(201);
+          res.should.have.status(200);
           userService.findBy({ email: 'test@wolox.com.ar' }).then(userFound => {
             should.exist(userFound);
             userFound.isAdmin.should.be.true;

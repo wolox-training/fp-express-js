@@ -20,7 +20,7 @@ exports.create = (req, res, next) => {
               `The album with id: ${req.params.id} was already bought by the user`
             );
           } else {
-            return albumsService.findByIdFromApi(req.params.id).then(albumInfo => {
+            return albumsService.getBy(`id=${req.params.id}`).then(albumInfo => {
               if (albumInfo) {
                 return albumsService.create(albumInfo.data[0], userFound.id).then(album => {
                   logger.info(`The album ${album} was bought successfully`);
