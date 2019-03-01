@@ -18,6 +18,8 @@ exports.ALBUM_NOT_FOUND = 'ALBUM_NOT_FOUND';
 
 exports.USER_WITHOUT_PERMISSIONS = 'USER_WITHOUT_PERMISSIONS';
 
+exports.INVALID_SESSION = 'INVALID_SESSION';
+
 exports.DEFAULT_ERROR = 'DEFAULT_ERROR';
 
 const internalError = (message, internalCode) => ({
@@ -36,4 +38,5 @@ exports.userAlreadyAdmin = message => internalError(message, exports.USER_ALREAD
 exports.albumAlreadyBought = message => internalError(message, exports.ALBUM_ALREADY_BOUGHT);
 exports.albumNotFound = message => internalError(message, exports.ALBUM_NOT_FOUND);
 exports.userWithoutPermissions = message => internalError(message, exports.USER_WITHOUT_PERMISSIONS);
+exports.invalidSession = message => internalError(message, exports.INVALID_SESSION);
 exports.internalServerError = message => internalError(message, exports.INTERNAL_SERVER_ERROR);

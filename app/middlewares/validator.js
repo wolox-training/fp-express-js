@@ -1,7 +1,8 @@
 const { check, validationResult } = require('express-validator/check'),
   errors = require('../errors'),
   logger = require('../logger'),
-  sessionManager = require('../services/sessionManager');
+  sessionManager = require('../services/sessionManager'),
+  usersService = require('../services/users');
 
 const userFields = ['firstName', 'lastName', 'password', 'email'];
 
@@ -50,8 +51,33 @@ const validateUserToken = (req, res, next) => {
   }
 };
 
+const validateUserSession = (req, res, next) => {
+  const userToken = req.headers[sessionManager.HEADER_NAME];
+  if (!userToken) {
+    next();
+  } else {
+    const userData = sessionManager.decodeToken(userToken);
+    return usersService
+      .findBy({ email: userData.email })
+      .then(userFound => {
+        if (!userFound.isAuthorized) {
+          logger.info(`The user session is not valid anymore.`);
+          throw errors.invalidSession(`The user session is not valid anymore.`);
+        } else {
+          next();
+        }
+      })
+      .catch(next);
+  }
+};
+
 exports.signUpValidator = [checkEmptyField(userFields), checkEmail, checkPassword, validateErrors];
 
 exports.signInValidator = [checkEmptyField(signInFields), checkEmail, checkPassword, validateErrors];
 
-exports.authValidator = [checkOptionalNumericField(paginationFields), validateUserToken, validateErrors];
+exports.authValidator = [
+  checkOptionalNumericField(paginationFields),
+  validateUserToken,
+  validateUserSession,
+  validateErrors
+];

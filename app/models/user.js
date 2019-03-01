@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: false,
         type: DataTypes.BOOLEAN
+      },
+      isAuthorized: {
+        allowNull: false,
+        defaultValue: false,
+        type: DataTypes.BOOLEAN
       }
     },
     {

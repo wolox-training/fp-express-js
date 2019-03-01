@@ -1,5 +1,5 @@
 <html><head><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" /><script src="https://code.jquery.com/jquery-1.12.2.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><style> pre { width: 95%; } </style></head><body><div class="container"><div class="jumbotron"><h1>Admin</h1></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-admin-users-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-admin-users-POST" href="#collapse-admin-users-POST">POST /admin/users</a></h4></div><div id="collapse-admin-users-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-admin-users-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
-  "authorization": "TestToken",
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHdvbG94LmNvbS5hciIsInBhc3N3b3JkIjoiMTIzNDU2NzgifQ.qi3SuoyHCJEoBQ5ocooLP72yHvPUzosGJpolMgGFpcQ",
   "content-type": "application/json",
   "content-length": 95
 }</pre><h5>Body</h5><pre>{
@@ -8,21 +8,22 @@
   "email": "spider.man@wolox.com.ar",
   "password": "12345678"
 }</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 201</h5><h5>Headers</h5><pre>{
-  "authorization": "TestToken",
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHdvbG94LmNvbS5hciIsInBhc3N3b3JkIjoiMTIzNDU2NzgifQ.qi3SuoyHCJEoBQ5ocooLP72yHvPUzosGJpolMgGFpcQ",
   "content-type": "application/json",
   "content-length": 95
 }</pre><h5>Body</h5><pre>{
-  "id": 3,
+  "isAuthorized": false,
+  "id": 4,
   "firstName": "Spider",
   "lastName": "Man",
   "email": "spider.man@wolox.com.ar",
-  "password": "$2a$10$rvNiXUXQYPcPjRn6pbCHTuA9LDaXa9lM0PXS4T//1cefdt1F3Qs8a",
+  "password": "$2a$10$Lv2nKe/xvPaFJvJvmq3wDuJL0rzOp1VYC5TewcljjH6m3DLSSoAv.",
   "isAdmin": true,
-  "updatedAt": "2019-02-28T19:42:14.816Z",
-  "createdAt": "2019-02-28T19:42:14.816Z",
+  "updatedAt": "2019-03-01T16:20:49.437Z",
+  "createdAt": "2019-03-01T16:20:49.437Z",
   "deletedAt": null
 }</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-admin-users-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-admin-users-POST" href="#collapse-admin-users-POST">POST /admin/users</a></h4></div><div id="collapse-admin-users-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-admin-users-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
-  "authorization": "TestToken",
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbkB3b2xveC5jb20uYXIiLCJwYXNzd29yZCI6IjEyMzQ1Njc4In0.v9UVT-fx2Ns_0_nBVYzV-6RoA0cpS-QMrqta4-Z_9FI",
   "content-type": "application/json",
   "content-length": 89
 }</pre><h5>Body</h5><pre>{
@@ -31,7 +32,7 @@
   "email": "test@wolox.com.ar",
   "password": "12345678"
 }</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 201</h5><h5>Headers</h5><pre>{
-  "authorization": "TestToken",
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbkB3b2xveC5jb20uYXIiLCJwYXNzd29yZCI6IjEyMzQ1Njc4In0.v9UVT-fx2Ns_0_nBVYzV-6RoA0cpS-QMrqta4-Z_9FI",
   "content-type": "application/json",
   "content-length": 89
 }</pre><h5>Body</h5><pre>{
@@ -39,9 +40,10 @@
   "firstName": "test",
   "lastName": "wolox",
   "email": "test@wolox.com.ar",
-  "password": "$2a$10$rvNiXUXQYPcPjRn6pbCHTuA9LDaXa9lM0PXS4T//1cefdt1F3Qs8a",
+  "password": "$2a$10$Lv2nKe/xvPaFJvJvmq3wDuJL0rzOp1VYC5TewcljjH6m3DLSSoAv.",
   "isAdmin": true,
-  "createdAt": "2019-02-28T19:42:14.919Z",
-  "updatedAt": "2019-02-28T19:42:15.017Z",
+  "isAuthorized": true,
+  "createdAt": "2019-03-01T16:20:49.539Z",
+  "updatedAt": "2019-03-01T16:20:49.717Z",
   "deletedAt": null
 }</pre></div></div></div></div></div></body></html>

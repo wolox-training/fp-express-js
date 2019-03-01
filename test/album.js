@@ -66,7 +66,8 @@ describe('albums controller', () => {
       firstName: 'test',
       lastName: 'wolox',
       email: 'test@wolox.com.ar',
-      password: bcryptService.encryptPassword('12345678')
+      password: bcryptService.encryptPassword('12345678'),
+      isAuthorized: true
     })
   );
   beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
@@ -100,15 +101,6 @@ describe('albums controller', () => {
         .then(res => {
           res.should.have.status(400);
           res.body.message.should.equal('The user is not logged in');
-        }));
-    it('should fail when the user does not exists', () =>
-      chai
-        .request(server)
-        .post('/albums/1')
-        .set(sessionManagerService.HEADER_NAME, wrongToken)
-        .then(res => {
-          res.should.have.status(404);
-          res.body.message.should.equal('The user with email: not-exist@wolox.com.ar could not be found');
         }));
   });
   describe('/albums GET list', () => {

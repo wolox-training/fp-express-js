@@ -21,6 +21,12 @@ const adminToken = sessionManagerService.createToken({
   password: '12345678'
 });
 
+const sessionTestToken = sessionManagerService.createToken({
+  id: 3,
+  email: 'session@wolox.com.ar',
+  password: '12345678'
+});
+
 const albumNock = nock('https://jsonplaceholder.typicode.com')
   .get('/albums?id=1')
   .reply(200, [
@@ -37,7 +43,8 @@ describe('users controller', () => {
       firstName: 'test',
       lastName: 'wolox',
       email: 'test@wolox.com.ar',
-      password: bcryptService.encryptPassword('12345678')
+      password: bcryptService.encryptPassword('12345678'),
+      isAuthorized: true
     })
   );
   beforeEach('create admin test user in db', () =>
@@ -46,7 +53,17 @@ describe('users controller', () => {
       lastName: 'adminazo',
       email: 'admin@wolox.com.ar',
       password: bcryptService.encryptPassword('12345678'),
-      isAdmin: true
+      isAdmin: true,
+      isAuthorized: true
+    })
+  );
+  beforeEach('create test user for invalidating session in db', () =>
+    userService.create({
+      firstName: 'session',
+      lastName: 'valid',
+      email: 'session@wolox.com.ar',
+      password: bcryptService.encryptPassword('12345678'),
+      isAuthorized: true
     })
   );
   beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
@@ -183,18 +200,18 @@ describe('users controller', () => {
       chai
         .request(server)
         .get('/users')
-        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .set(sessionManagerService.HEADER_NAME, testToken)
         .then(res => {
           res.should.have.status(200);
           res.body.should.be.a('array');
-          res.body.should.have.lengthOf(2);
+          res.body.should.have.lengthOf(3);
           dictum.chai(res);
         }));
     it('should fail when limit query param is not a number', () =>
       chai
         .request(server)
         .get('/users?limit=a')
-        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .set(sessionManagerService.HEADER_NAME, testToken)
         .then(res => {
           res.should.have.status(400);
           res.body.message[0].param.should.equal('limit');
@@ -204,7 +221,7 @@ describe('users controller', () => {
       chai
         .request(server)
         .get('/users?limit=2&offset=a')
-        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .set(sessionManagerService.HEADER_NAME, testToken)
         .then(res => {
           res.should.have.status(400);
           res.body.message[0].param.should.equal('offset');
@@ -222,7 +239,7 @@ describe('users controller', () => {
           chai
             .request(server)
             .get('/users?limit=2')
-            .set(sessionManagerService.HEADER_NAME, 'TestToken')
+            .set(sessionManagerService.HEADER_NAME, testToken)
             .then(res => {
               res.should.have.status(200);
               res.body.should.be.a('array');
@@ -235,7 +252,7 @@ describe('users controller', () => {
       chai
         .request(server)
         .post('/admin/users')
-        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .set(sessionManagerService.HEADER_NAME, testToken)
         .send({
           firstName: 'Spider',
           lastName: 'Man',
@@ -254,7 +271,7 @@ describe('users controller', () => {
       chai
         .request(server)
         .post('/admin/users')
-        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .set(sessionManagerService.HEADER_NAME, adminToken)
         .send({
           firstName: 'test',
           lastName: 'wolox',
@@ -287,7 +304,7 @@ describe('users controller', () => {
       chai
         .request(server)
         .post('/admin/users')
-        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .set(sessionManagerService.HEADER_NAME, testToken)
         .send({
           firstName: 'test',
           lastName: 'wolox',
@@ -303,7 +320,7 @@ describe('users controller', () => {
       chai
         .request(server)
         .post('/admin/users')
-        .set(sessionManagerService.HEADER_NAME, 'TestToken')
+        .set(sessionManagerService.HEADER_NAME, testToken)
         .send({
           lastName: 'wolox',
           email: 'test@wolox.com.ar',
@@ -347,6 +364,28 @@ describe('users controller', () => {
           res.should.have.status(200);
           res.body.should.be.a('array');
           dictum.chai(res);
+        }));
+  });
+  describe('/users/sessions/invalidate_all POST', () => {
+    it('should be successful invalidating all user sessions', () =>
+      chai
+        .request(server)
+        .post('/users/sessions/invalidate_all')
+        .set(sessionManagerService.HEADER_NAME, sessionTestToken)
+        .then(res => {
+          res.should.have.status(200);
+          userService
+            .findBy({ email: 'session@wolox.com.ar' })
+            .then(userFound => userFound.isAuthorized.should.be.false);
+          dictum.chai(res);
+        }));
+    it('should be fail when the user is not logged in', () =>
+      chai
+        .request(server)
+        .post('/users/sessions/invalidate_all')
+        .then(res => {
+          res.should.have.status(400);
+          res.body.message.should.equal('The user is not logged in');
         }));
   });
 });
