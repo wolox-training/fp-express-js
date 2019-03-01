@@ -60,7 +60,7 @@ const photosNock = nock('https://jsonplaceholder.typicode.com')
     }
   ]);
 
-describe('albums controller', () => {
+describe('albums', () => {
   beforeEach('create test user in db', () =>
     userService.create({
       firstName: 'test',
@@ -71,7 +71,7 @@ describe('albums controller', () => {
     })
   );
   beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
-  beforeEach('create test album in db', () => albumService.create({ id: '2', title: 'robin' }, '2'));
+  afterEach('clean nock mocks', () => nock.cleanAll());
   describe('/albums POST buy', () => {
     it('should be successful buying a new album', () =>
       chai

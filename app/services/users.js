@@ -20,12 +20,6 @@ exports.findAllBy = (limit = 5, offset = 0, condition) =>
     throw errors.databaseError(error.message);
   });
 
-exports.createAdmin = userFields =>
-  user.create({ ...userFields, isAdmin: true }).catch(error => {
-    logger.info(`Failed to create the admin user. ${error}`);
-    throw errors.databaseError(error.message);
-  });
-
 exports.update = (userToUpdate, newUserFields) =>
   userToUpdate.update(newUserFields).catch(error => {
     logger.info(`Failed to create the admin user. ${error}`);
