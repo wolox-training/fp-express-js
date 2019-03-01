@@ -46,6 +46,7 @@ describe('albums', () => {
     })
   );
   beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
+  afterEach('clean nock mocks', () => nock.cleanAll());
   describe('/albums POST buy', () => {
     it('should be successful buying a new album', () =>
       chai
