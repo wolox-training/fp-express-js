@@ -3,8 +3,8 @@ const album = require('../models').album,
   errors = require('../errors'),
   axios = require('axios');
 
-exports.findByIdFromApi = albumId =>
-  axios.get(`${process.env.ALBUMS_URL}?id=${albumId}`).catch(error => {
+exports.getBy = condition =>
+  axios.get(`${process.env.ALBUMS_URL}?${condition}`).catch(error => {
     logger.info(`Failed to retrieve the album from api. ${error}`);
     throw errors.internalServerError(error.message);
   });
@@ -18,5 +18,11 @@ exports.create = (albumInfo, userId) =>
 exports.findBy = condition =>
   album.findOne({ where: condition }).catch(error => {
     logger.error(`Failed to retrieve album from database. ${error}`);
+    throw errors.databaseError(error.message);
+  });
+
+exports.findAll = () =>
+  axios.get(process.env.ALBUMS_URL).catch(error => {
+    logger.error(`Failed to retrieve albums from database. ${error}`);
     throw errors.databaseError(error.message);
   });
