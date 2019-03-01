@@ -14,7 +14,8 @@ const chai = require('chai'),
 const testToken = sessionManagerService.createToken({
   id: 1,
   email: 'test@wolox.com.ar',
-  password: '12345678'
+  password: '12345678',
+  expirationTime: moment().unix()
 });
 
 const adminToken = sessionManagerService.createToken({
@@ -38,8 +39,6 @@ const albumNock = nock('https://jsonplaceholder.typicode.com')
       title: 'Batman rules'
     }
   ]);
-
-const mockedDate = mockDate.set(moment().add(1, 'days'));
 
 describe('users controller', () => {
   beforeEach('create test user in db', () =>
@@ -393,22 +392,28 @@ describe('users controller', () => {
         }));
   });
   describe('Users token expiration test', () => {
-    it('should be successful getting invalid session when the token expiration time has expired', () =>
+    it('should be successful getting invalid session when the token expiration time has expired', () => {
+      const mockedDate = mockDate.set(moment().add(1, 'days'));
+      return chai
+        .request(server)
+        .get('/users/')
+        .set(sessionManagerService.HEADER_NAME, sessionTestToken)
+        .then(res => {
+          res.should.have.status(403);
+          res.body.message.should.equal('The user session is not valid anymore.');
+          mockDate.reset();
+          dictum.chai(res);
+        });
+    });
+    it('should be successful getting the user list when the token expiration time has not expired', () =>
       chai
         .request(server)
-        .post('/users/sessions')
-        .send({
-          email: 'test@wolox.com.ar',
-          password: '12345678'
-        })
-        .then(loggedRes =>
-          chai
-            .request(server)
-            .get('/users/')
-            .set(sessionManagerService.HEADER_NAME, loggedRes.headers[sessionManagerService.HEADER_NAME])
-            .then(res => {
-              res.should.have.status(200);
-            })
-        ));
+        .get('/users/')
+        .set(sessionManagerService.HEADER_NAME, sessionTestToken)
+        .then(res => {
+          res.should.have.status(200);
+          res.body.should.be.a('array');
+          res.body.should.have.lengthOf(3);
+        }));
   });
 });
