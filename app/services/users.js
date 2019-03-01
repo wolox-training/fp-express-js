@@ -27,7 +27,7 @@ exports.update = (userToUpdate, newUserFields) =>
   });
 
 exports.invalidateSessions = userToInvalidate =>
-  userToInvalidate.update({ isAuthorized: false }).catch(error => {
+  userToInvalidate.update({ isEnableToLoggin: false }).catch(error => {
     logger.info(`Failed to update the user. ${error}`);
     throw errors.databaseError(error.message);
   });

@@ -38,7 +38,7 @@ exports.signIn = (req, res, next) =>
               email: userFound.email,
               password: userFound.password
             });
-            return usersService.update(userFound, { isAuthorized: true }).then(() => {
+            return usersService.update(userFound, { isEnableToLoggin: true }).then(() => {
               logger.info(`The token ${userToken} was created successfully`);
               res.status(200).send({ token: userToken });
             });

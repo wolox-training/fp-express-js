@@ -67,7 +67,7 @@ describe('albums', () => {
       lastName: 'wolox',
       email: 'test@wolox.com.ar',
       password: bcryptService.encryptPassword('12345678'),
-      isAuthorized: true
+      isEnableToLoggin: true
     })
   );
   beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
