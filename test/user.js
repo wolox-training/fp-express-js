@@ -1,5 +1,7 @@
 const chai = require('chai'),
   dictum = require('dictum.js'),
+  moment = require('moment'),
+  mockDate = require('mockdate'),
   server = require('../app'),
   should = chai.should(),
   nock = require('nock'),
@@ -36,6 +38,8 @@ const albumNock = nock('https://jsonplaceholder.typicode.com')
       title: 'Batman rules'
     }
   ]);
+
+const mockedDate = mockDate.set(moment().add(1, 'days'));
 
 describe('users controller', () => {
   beforeEach('create test user in db', () =>
@@ -387,5 +391,24 @@ describe('users controller', () => {
           res.should.have.status(400);
           res.body.message.should.equal('The user is not logged in');
         }));
+  });
+  describe('Users token expiration test', () => {
+    it('should be successful getting invalid session when the token expiration time has expired', () =>
+      chai
+        .request(server)
+        .post('/users/sessions')
+        .send({
+          email: 'test@wolox.com.ar',
+          password: '12345678'
+        })
+        .then(loggedRes =>
+          chai
+            .request(server)
+            .get('/users/')
+            .set(sessionManagerService.HEADER_NAME, loggedRes.headers[sessionManagerService.HEADER_NAME])
+            .then(res => {
+              res.should.have.status(200);
+            })
+        ));
   });
 });
