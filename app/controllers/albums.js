@@ -40,7 +40,7 @@ exports.create = (req, res, next) => {
 
 exports.getAlbums = (req, res, next) =>
   albumsService
-    .findAll()
+    .findAllFromApi()
     .then(albumList => {
       logger.info(`The album list: ${albumList.data} was retrieved successfully`);
       res.status(200).send(albumList.data);

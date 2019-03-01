@@ -21,8 +21,14 @@ exports.findBy = condition =>
     throw errors.databaseError(error.message);
   });
 
-exports.findAll = () =>
+exports.findAllFromApi = () =>
   axios.get(process.env.ALBUMS_URL).catch(error => {
+    logger.error(`Failed to retrieve albums from database. ${error}`);
+    throw errors.databaseError(error.message);
+  });
+
+exports.findAllBy = condition =>
+  album.findAll({ where: condition }).catch(error => {
     logger.error(`Failed to retrieve albums from database. ${error}`);
     throw errors.databaseError(error.message);
   });

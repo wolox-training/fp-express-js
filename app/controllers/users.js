@@ -1,4 +1,5 @@
 const usersService = require('../services/users'),
+  albumsService = require('../services/albums'),
   logger = require('../logger'),
   errors = require('../errors'),
   bcryptService = require('../services/bcrypt'),
@@ -33,6 +34,7 @@ exports.signIn = (req, res, next) =>
         return bcryptService.comparePassword(req.body.password, userFound.password).then(isSamePassword => {
           if (isSamePassword) {
             const userToken = sessionManagerService.createToken({
+              id: userFound.id,
               email: userFound.email,
               password: userFound.password
             });
@@ -80,3 +82,33 @@ exports.createAdmin = (req, res, next) =>
       }
     })
     .catch(next);
+
+exports.getAlbums = (req, res, next) => {
+  const userData = sessionManagerService.decodeToken(req.headers[sessionManagerService.HEADER_NAME]);
+  return usersService
+    .findBy({ email: userData.email })
+    .then(userFound => {
+      if (!userFound) {
+        logger.info(`The user with email: ${userData.email} could not be found`);
+        throw errors.userNotFound(`The user with email: ${userData.email} could not be found`);
+      } else {
+        if (userFound.isAdmin || Number(req.params.id) === userData.id) {
+          return albumsService.findAllBy({ userId: req.params.id }).then(albumsBought => {
+            if (albumsBought.length === 0) {
+              logger.info(`The user ${userFound.email} has not bought any album`);
+              throw errors.albumNotFound(`The user ${userFound.email} has not bought any album`);
+            } else {
+              logger.info(`The user ${userFound.email} has bought ${albumsBought}`);
+              res.status(200).send(albumsBought);
+            }
+          });
+        } else {
+          logger.info(`The user ${userFound.email} does not have permissions to get the info`);
+          throw errors.userWithoutPermissions(
+            `The user ${userFound.email} does not have permissions to get the info`
+          );
+        }
+      }
+    })
+    .catch(next);
+};
