@@ -228,7 +228,7 @@ describe('users controller', () => {
           password: '12345678'
         })
         .then(res => {
-          res.should.have.status(201);
+          res.should.have.status(200);
           userService.findBy({ email: 'test@wolox.com.ar' }).then(userFound => {
             should.exist(userFound);
             userFound.isAdmin.should.be.true;
