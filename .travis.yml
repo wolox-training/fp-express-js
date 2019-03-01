@@ -6,7 +6,7 @@ node_js:
 sudo: true
 
 env:
-  - CXX=g++-4.8 NODE_ENV=testing ALBUMS_URL=https://jsonplaceholder.typicode.com/albums PHOTOS_URL=https://jsonplaceholder.typicode.com/photos
+  - CXX=g++-4.8 NODE_ENV=testing ALBUMS_URL=https://jsonplaceholder.typicode.com/albums PHOTOS_URL=https://jsonplaceholder.typicode.com/photos TOKEN_EXPIRATION_TIME=2 
 addons:
   apt:
     sources:

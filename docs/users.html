@@ -366,14 +366,14 @@
   "content-length": 98
 }</pre><h5>Body</h5><pre>{
   "isAdmin": false,
-  "id": 3,
+  "isEnableToLoggin": false,
+  "id": 4,
   "firstName": "Harry",
   "lastName": "Potter",
   "email": "harry.perez@wolox.com.ar",
-  "password": "$2a$10$j0w5u.fRzJ1IhaFT.p8TBegKlEoSj3ABwzo8bM2.mfEjoy0FFZeue",
-  "updatedAt": "2019-03-01T20:01:44.109Z",
-  "createdAt": "2019-03-01T20:01:44.109Z",
-  "isAuthorized": false,
+  "password": "$2a$10$Z4Y21Dcts0ZOcyd6BZxOSerfm.MQh8p4bcRilqjVhClz89ps4.5Ne",
+  "updatedAt": "2019-03-01T21:08:51.487Z",
+  "createdAt": "2019-03-01T21:08:51.487Z",
   "deletedAt": null
 }</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-sessions-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-sessions-POST" href="#collapse-users-sessions-POST">POST /users/sessions</a></h4></div><div id="collapse-users-sessions-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-sessions-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
   "content-type": "application/json",
@@ -385,21 +385,22 @@
   "content-type": "application/json",
   "content-length": 51
 }</pre><h5>Body</h5><pre>{
-  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHdvbG94LmNvbS5hciIsInBhc3N3b3JkIjoiJDJhJDEwJGowdzV1LmZSekoxSWhhRlQucDhUQmVnS2xFb1NqM0FCd3pvOGJNMi5tZkVqb3kwRkZaZXVlIn0.55mUwzMzaXu61MCp1KaopMdpnlh_zjH3xnEKtfT0PlE"
+  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHdvbG94LmNvbS5hciIsInBhc3N3b3JkIjoiJDJhJDEwJFo0WTIxRGN0czBaT2N5ZDZCWnhPU2VyZm0uTVFoOHA0YmNSaWxxalZoQ2x6ODlwczQuNU5lIn0.xxUBUoqrCAk70rtyJGblA49WLUbAgslPgTFVu7zddt4"
 }</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-GET"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-GET" href="#collapse-users-GET">GET /users</a></h4></div><div id="collapse-users-GET" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-GET"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
-  "authorization": "TestToken"
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHdvbG94LmNvbS5hciIsInBhc3N3b3JkIjoiMTIzNDU2NzgifQ.qi3SuoyHCJEoBQ5ocooLP72yHvPUzosGJpolMgGFpcQ"
 }</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 200</h5><h5>Headers</h5><pre>{
-  "authorization": "TestToken"
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHdvbG94LmNvbS5hciIsInBhc3N3b3JkIjoiMTIzNDU2NzgifQ.qi3SuoyHCJEoBQ5ocooLP72yHvPUzosGJpolMgGFpcQ"
 }</pre><h5>Body</h5><pre>[
   {
     "id": 1,
     "firstName": "test",
     "lastName": "wolox",
     "email": "test@wolox.com.ar",
-    "password": "$2a$10$j0w5u.fRzJ1IhaFT.p8TBegKlEoSj3ABwzo8bM2.mfEjoy0FFZeue",
+    "password": "$2a$10$Z4Y21Dcts0ZOcyd6BZxOSerfm.MQh8p4bcRilqjVhClz89ps4.5Ne",
     "isAdmin": false,
-    "createdAt": "2019-03-01T20:01:46.024Z",
-    "updatedAt": "2019-03-01T20:01:46.024Z",
+    "isEnableToLoggin": true,
+    "createdAt": "2019-03-01T21:08:54.127Z",
+    "updatedAt": "2019-03-01T21:08:54.127Z",
     "deletedAt": null
   },
   {
@@ -407,10 +408,23 @@
     "firstName": "admin",
     "lastName": "adminazo",
     "email": "admin@wolox.com.ar",
-    "password": "$2a$10$j0w5u.fRzJ1IhaFT.p8TBegKlEoSj3ABwzo8bM2.mfEjoy0FFZeue",
+    "password": "$2a$10$Z4Y21Dcts0ZOcyd6BZxOSerfm.MQh8p4bcRilqjVhClz89ps4.5Ne",
     "isAdmin": true,
-    "createdAt": "2019-03-01T20:01:46.110Z",
-    "updatedAt": "2019-03-01T20:01:46.110Z",
+    "isEnableToLoggin": true,
+    "createdAt": "2019-03-01T21:08:54.214Z",
+    "updatedAt": "2019-03-01T21:08:54.214Z",
+    "deletedAt": null
+  },
+  {
+    "id": 3,
+    "firstName": "session",
+    "lastName": "valid",
+    "email": "session@wolox.com.ar",
+    "password": "$2a$10$Z4Y21Dcts0ZOcyd6BZxOSerfm.MQh8p4bcRilqjVhClz89ps4.5Ne",
+    "isAdmin": false,
+    "isEnableToLoggin": true,
+    "createdAt": "2019-03-01T21:08:54.299Z",
+    "updatedAt": "2019-03-01T21:08:54.299Z",
     "deletedAt": null
   }
 ]</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-1-albums-GET"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-1-albums-GET" href="#collapse-users-1-albums-GET">GET /users/1/albums</a></h4></div><div id="collapse-users-1-albums-GET" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-1-albums-GET"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
@@ -423,8 +437,8 @@
     "title": "batman",
     "albumId": 1,
     "userId": 1,
-    "createdAt": "2019-03-01T20:01:48.015Z",
-    "updatedAt": "2019-03-01T20:01:48.015Z"
+    "createdAt": "2019-03-01T21:08:57.047Z",
+    "updatedAt": "2019-03-01T21:08:57.047Z"
   }
 ]</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-1-albums-GET"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-1-albums-GET" href="#collapse-users-1-albums-GET">GET /users/1/albums</a></h4></div><div id="collapse-users-1-albums-GET" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-1-albums-GET"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
   "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MiwiZW1haWwiOiJhZG1pbkB3b2xveC5jb20uYXIiLCJwYXNzd29yZCI6IjEyMzQ1Njc4In0.v9UVT-fx2Ns_0_nBVYzV-6RoA0cpS-QMrqta4-Z_9FI"
@@ -436,7 +450,22 @@
     "title": "batman",
     "albumId": 1,
     "userId": 1,
-    "createdAt": "2019-03-01T20:01:48.401Z",
-    "updatedAt": "2019-03-01T20:01:48.401Z"
+    "createdAt": "2019-03-01T21:08:57.652Z",
+    "updatedAt": "2019-03-01T21:08:57.652Z"
   }
-]</pre></div></div></div></div></div></body></html>
+]</pre></div></div></div></div><div class="panel panel-default"><div class="panel-heading" role="tab" id="heading-users-sessions-invalidate_all-POST"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapse-users-sessions-invalidate_all-POST" href="#collapse-users-sessions-invalidate_all-POST">POST /users/sessions/invalidate_all</a></h4></div><div id="collapse-users-sessions-invalidate_all-POST" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading-users-sessions-invalidate_all-POST"><div class="panel-body"><h4>Request Data</h4><div class="container"><h5>Headers</h5><pre>{
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJzZXNzaW9uQHdvbG94LmNvbS5hciIsInBhc3N3b3JkIjoiMTIzNDU2NzgifQ.kr4ZAX65nf4lA7rDFxpazaVzJkg0n2n4l436Kcs7VSY"
+}</pre></div></div><div class="panel-body"><h4>Response Data</h4><div class="container"><h5>Status: 200</h5><h5>Headers</h5><pre>{
+  "authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MywiZW1haWwiOiJzZXNzaW9uQHdvbG94LmNvbS5hciIsInBhc3N3b3JkIjoiMTIzNDU2NzgifQ.kr4ZAX65nf4lA7rDFxpazaVzJkg0n2n4l436Kcs7VSY"
+}</pre><h5>Body</h5><pre>{
+  "id": 3,
+  "firstName": "session",
+  "lastName": "valid",
+  "email": "session@wolox.com.ar",
+  "password": "$2a$10$Z4Y21Dcts0ZOcyd6BZxOSerfm.MQh8p4bcRilqjVhClz89ps4.5Ne",
+  "isAdmin": false,
+  "isEnableToLoggin": false,
+  "createdAt": "2019-03-01T21:08:57.942Z",
+  "updatedAt": "2019-03-01T21:08:57.955Z",
+  "deletedAt": null
+}</pre></div></div></div></div></div></body></html>

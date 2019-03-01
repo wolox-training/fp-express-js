@@ -38,8 +38,10 @@ exports.signIn = (req, res, next) =>
               email: userFound.email,
               password: userFound.password
             });
-            logger.info(`The token ${userToken} was created successfully`);
-            res.status(200).send({ token: userToken });
+            return usersService.update(userFound, { isEnableToLoggin: true }).then(() => {
+              logger.info(`The token ${userToken} was created successfully`);
+              res.status(200).send({ token: userToken });
+            });
           } else {
             logger.info('The credentials are not valid');
             throw errors.invalidPassword('The credentials are not valid');
@@ -108,6 +110,24 @@ exports.getAlbums = (req, res, next) => {
             `The user ${userFound.email} does not have permissions to get the info`
           );
         }
+      }
+    })
+    .catch(next);
+};
+
+exports.invalidateSessions = (req, res, next) => {
+  const userData = sessionManagerService.decodeToken(req.headers[sessionManagerService.HEADER_NAME]);
+  return usersService
+    .findBy({ email: userData.email })
+    .then(userFound => {
+      if (!userFound) {
+        logger.info(`The user with email: ${userData.email} could not be found`);
+        throw errors.userNotFound(`The user with email: ${userData.email} could not be found`);
+      } else {
+        return usersService.invalidateSessions(userFound).then(updatedUser => {
+          logger.info(`All sessions of user ${updatedUser} had been invalidated`);
+          res.status(200).send(updatedUser);
+        });
       }
     })
     .catch(next);

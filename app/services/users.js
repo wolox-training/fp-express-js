@@ -25,3 +25,9 @@ exports.update = (userToUpdate, newUserFields) =>
     logger.info(`Failed to create the admin user. ${error}`);
     throw errors.databaseError(error.message);
   });
+
+exports.invalidateSessions = userToInvalidate =>
+  userToInvalidate.update({ isEnableToLoggin: false }).catch(error => {
+    logger.info(`Failed to update the user. ${error}`);
+    throw errors.databaseError(error.message);
+  });

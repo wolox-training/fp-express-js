@@ -39,6 +39,11 @@ module.exports = {
         defaultValue: false,
         type: Sequelize.BOOLEAN
       },
+      isEnableToLoggin: {
+        allowNull: false,
+        defaultValue: false,
+        type: Sequelize.BOOLEAN
+      },
       deletedAt: { type: Sequelize.DATE }
     }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('users')
