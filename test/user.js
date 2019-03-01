@@ -47,7 +47,7 @@ describe('users controller', () => {
       lastName: 'wolox',
       email: 'test@wolox.com.ar',
       password: bcryptService.encryptPassword('12345678'),
-      isAuthorized: true
+      isEnableToLoggin: true
     })
   );
   beforeEach('create admin test user in db', () =>
@@ -57,7 +57,7 @@ describe('users controller', () => {
       email: 'admin@wolox.com.ar',
       password: bcryptService.encryptPassword('12345678'),
       isAdmin: true,
-      isAuthorized: true
+      isEnableToLoggin: true
     })
   );
   beforeEach('create test user for invalidating session in db', () =>
@@ -66,7 +66,7 @@ describe('users controller', () => {
       lastName: 'valid',
       email: 'session@wolox.com.ar',
       password: bcryptService.encryptPassword('12345678'),
-      isAuthorized: true
+      isEnableToLoggin: true
     })
   );
   beforeEach('create test album in db', () => albumService.create({ id: '1', title: 'batman' }, '1'));
@@ -142,11 +142,12 @@ describe('users controller', () => {
           password: '12345678'
         })
         .then(res => {
+          const token = sessionManagerService.decodeToken(res.body.token);
           res.should.have.status(200);
-          bcryptService
-            .comparePassword('12345678', sessionManagerService.decodeToken(res.body.token))
-            .then(isSamePassword => expect(isSamePassword).to.be.true);
-          dictum.chai(res);
+          bcryptService.comparePassword('12345678', token.password).then(isSamePassword => {
+            expect(isSamePassword).to.be.true;
+            dictum.chai(res);
+          });
         }));
     it('should fail when the user is not signed up', () =>
       chai
@@ -282,7 +283,7 @@ describe('users controller', () => {
           password: '12345678'
         })
         .then(res => {
-          res.should.have.status(201);
+          res.should.have.status(200);
           userService.findBy({ email: 'test@wolox.com.ar' }).then(userFound => {
             should.exist(userFound);
             userFound.isAdmin.should.be.true;
@@ -379,7 +380,7 @@ describe('users controller', () => {
           res.should.have.status(200);
           userService
             .findBy({ email: 'session@wolox.com.ar' })
-            .then(userFound => userFound.isAuthorized.should.be.false);
+            .then(userFound => userFound.isEnableToLoggin.should.be.false);
           dictum.chai(res);
         }));
     it('should be fail when the user is not logged in', () =>

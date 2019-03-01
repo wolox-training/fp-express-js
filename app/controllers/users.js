@@ -38,7 +38,7 @@ exports.signIn = (req, res, next) =>
               email: userFound.email,
               password: userFound.password
             });
-            return usersService.update(userFound, { isAuthorized: true }).then(() => {
+            return usersService.update(userFound, { isEnableToLoggin: true }).then(() => {
               logger.info(`The token ${userToken} was created successfully`);
               res
                 .status(200)
@@ -73,12 +73,12 @@ exports.createAdmin = (req, res, next) =>
         } else {
           return usersService.update(userFound, { isAdmin: true }).then(adminUser => {
             logger.info(`The user ${adminUser} was updated as admin successfully`);
-            res.status(201).send(adminUser);
+            res.status(200).send(adminUser);
           });
         }
       } else {
         return usersService
-          .createAdmin({ ...req.body, password: bcryptService.encryptPassword(req.body.password) })
+          .create({ ...req.body, password: bcryptService.encryptPassword(req.body.password), isAdmin: true })
           .then(newAdminUser => {
             logger.info(`The user ${newAdminUser} was created successfully as an admin`);
             res.status(201).send(newAdminUser);

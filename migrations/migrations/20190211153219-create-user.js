@@ -39,7 +39,7 @@ module.exports = {
         defaultValue: false,
         type: Sequelize.BOOLEAN
       },
-      isAuthorized: {
+      isEnableToLoggin: {
         allowNull: false,
         defaultValue: false,
         type: Sequelize.BOOLEAN

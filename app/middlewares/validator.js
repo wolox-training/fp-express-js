@@ -61,7 +61,7 @@ const validateUserSession = (req, res, next) => {
     return usersService
       .findBy({ email: userData.email })
       .then(userFound => {
-        if (!userFound.isAuthorized || userData.expirationTime < moment().unix()) {
+        if (!userFound.isEnableToLoggin || userData.expirationTime < moment().unix()) {
           logger.info(`The user session is not valid anymore.`);
           throw errors.invalidSession(`The user session is not valid anymore.`);
         } else {
