@@ -36,7 +36,7 @@ const albumNock = nock('https://jsonplaceholder.typicode.com')
     }
   ]);
 
-describe('albums controller', () => {
+describe('albums', () => {
   beforeEach('create test user in db', () =>
     userService.create({
       firstName: 'test',
