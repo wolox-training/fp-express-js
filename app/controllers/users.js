@@ -40,7 +40,9 @@ exports.signIn = (req, res, next) =>
             });
             return usersService.update(userFound, { isEnableToLoggin: true }).then(() => {
               logger.info(`The token ${userToken} was created successfully`);
-              res.status(200).send({ token: userToken });
+              res
+                .status(200)
+                .send({ token: userToken, tokenExpirationTimeInMinutes: process.env.TOKEN_EXPIRATION_TIME });
             });
           } else {
             logger.info('The credentials are not valid');

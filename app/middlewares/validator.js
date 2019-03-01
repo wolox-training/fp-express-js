@@ -1,4 +1,5 @@
 const { check, validationResult } = require('express-validator/check'),
+  moment = require('moment'),
   errors = require('../errors'),
   logger = require('../logger'),
   sessionManager = require('../services/sessionManager'),
@@ -60,7 +61,7 @@ const validateUserSession = (req, res, next) => {
     return usersService
       .findBy({ email: userData.email })
       .then(userFound => {
-        if (!userFound.isEnableToLoggin) {
+        if (!userFound.isEnableToLoggin || userData.expirationTime < moment().unix()) {
           logger.info(`The user session is not valid anymore.`);
           throw errors.invalidSession(`The user session is not valid anymore.`);
         } else {
